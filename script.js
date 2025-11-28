@@ -642,7 +642,22 @@ function updateCartDiscount(cartItemId) {
         cartItem.price = cartItem.originalPrice - amountDiscount;
     }
     
-    renderCart();
+    // Update price display
+    const priceDisplayContainer = document.getElementById(`price-display-${cartItemId}`);
+    if (priceDisplayContainer) {
+        let priceDisplay = `<strong style="font-size: 18px;">$${cartItem.price.toFixed(2)}</strong>`;
+        if (cartItem.price !== cartItem.originalPrice) {
+            priceDisplay = `
+                <div style="text-align: right; line-height: 1.2;">
+                    <div style="font-size: 12px; color: var(--text-medium); text-decoration: line-through;">$${cartItem.originalPrice.toFixed(2)}</div>
+                    <strong style="font-size: 18px; color: #4caf50;">$${cartItem.price.toFixed(2)}</strong>
+                </div>
+            `;
+        }
+        priceDisplayContainer.innerHTML = priceDisplay;
+    }
+    
+    updateCartTotal();
 }
 
 // Render sell combo selection
@@ -800,15 +815,26 @@ function updateQuantity(itemId, change) {
     }
 }
 
+// Update cart total display
+function updateCartTotal() {
+    let total = 0;
+    currentCart.forEach(item => {
+        const qty = item.quantity || 1;
+        total += item.price * qty;
+    });
+    const totalEl = document.getElementById('cart-total');
+    if (totalEl) {
+        totalEl.textContent = `Total: $${total.toFixed(2)}`;
+    }
+}
+
 // Render cart
 function renderCart() {
     const container = document.getElementById('cart-items');
     container.innerHTML = '';
     
-    let total = 0;
     currentCart.forEach(item => {
         const qty = item.quantity || 1;
-        total += item.price * qty;
         
         const div = document.createElement('div');
         div.className = 'cart-item';
@@ -867,7 +893,9 @@ function renderCart() {
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     ${quantityControls}
-                    ${priceDisplay}
+                    <div id="price-display-${item.id}">
+                        ${priceDisplay}
+                    </div>
                     <button class="remove-btn-icon" onclick="removeFromCart(${item.id})" title="Remove">×</button>
                 </div>
             </div>
@@ -876,7 +904,7 @@ function renderCart() {
         container.appendChild(div);
     });
     
-    document.getElementById('cart-total').textContent = `Total: $${total.toFixed(2)}`;
+    updateCartTotal();
 }
 
 // Remove from cart
