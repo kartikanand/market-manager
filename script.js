@@ -1269,15 +1269,12 @@ Thank you for your purchase!
         message: emailContent
     };
     
-    // Note: User needs to set up EmailJS account and replace these values
-    // Service ID, Template ID, and Public Key from EmailJS dashboard
-    
-    // Use config from window.APP_CONFIG (populated from URL params or defaults in index.html)
+    // Use config from window.APP_CONFIG
     const serviceId = (window.APP_CONFIG && window.APP_CONFIG.emailjsServiceId) || '';
     const templateId = (window.APP_CONFIG && window.APP_CONFIG.emailjsTemplateId) || '';
 
     if (!serviceId || !templateId) {
-        alert('EmailJS configuration missing. Please provide service_id and template_id in URL parameters.');
+        alert('EmailJS configuration missing. Please provide service_id and template_id in settings.');
         return;
     }
 
@@ -1292,36 +1289,15 @@ Thank you for your purchase!
 
 // Settings Management
 function loadSettings() {
-    // 1. Try to get from URL first (One-time setup)
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlPk = urlParams.get('public_key');
-    const urlSid = urlParams.get('service_id');
-    const urlTid = urlParams.get('template_id');
-
-    if (urlPk && urlSid && urlTid) {
-        const settings = {
-            emailjsPublicKey: urlPk,
-            emailjsServiceId: urlSid,
-            emailjsTemplateId: urlTid
-        };
-        localStorage.setItem('craftMarketSettings', JSON.stringify(settings));
-        window.APP_CONFIG = settings;
-        
-        // Clean URL to remove secrets
-        window.history.replaceState({}, document.title, window.location.pathname);
-        alert('Settings imported from URL and saved!');
+    const savedSettings = localStorage.getItem('craftMarketSettings');
+    if (savedSettings) {
+        window.APP_CONFIG = JSON.parse(savedSettings);
     } else {
-        // 2. Try to get from LocalStorage
-        const savedSettings = localStorage.getItem('craftMarketSettings');
-        if (savedSettings) {
-            window.APP_CONFIG = JSON.parse(savedSettings);
-        } else {
-            window.APP_CONFIG = {
-                emailjsPublicKey: '',
-                emailjsServiceId: '',
-                emailjsTemplateId: ''
-            };
-        }
+        window.APP_CONFIG = {
+            emailjsPublicKey: '',
+            emailjsServiceId: '',
+            emailjsTemplateId: ''
+        };
     }
 
     // Initialize EmailJS if key exists

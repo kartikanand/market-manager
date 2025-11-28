@@ -208,46 +208,9 @@
         </div>
     </div>
 
-    <!-- Clear All Data Modal -->
-    <div id="clear-modal" class="modal-overlay">
-        <div class="modal">
-            <h2>Clear All Data</h2>
-            <div class="warning-text">
-                ⚠️ WARNING: This will permanently delete ALL data!
-            </div>
-            <p style="font-size: 16px; margin: 15px 0;">This will delete:</p>
-            <ul style="margin: 15px 0; padding-left: 25px;">
-                <li style="margin: 8px 0; font-weight: 600;">All inventory items</li>
-                <li style="margin: 8px 0; font-weight: 600;">All sales records</li>
-                <li style="margin: 8px 0; font-weight: 600;">Current cart</li>
-            </ul>
-            <p style="font-size: 14px; color: var(--text-medium); margin-top: 15px;">This action cannot be undone.</p>
-            <div class="modal-buttons">
-                <button class="btn remove-btn" onclick="confirmClearAll()">Yes, Delete Everything</button>
-                <button class="btn btn-secondary" onclick="closeModal('clear-modal')">Cancel</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Import Inventory Modal -->
-    <div id="import-modal" class="modal-overlay">
-        <div class="modal">
-            <h2>Import Inventory</h2>
-            <p style="font-size: 16px; margin: 15px 0;">Upload a JSON file to import inventory items.</p>
-            <label class="import-file-label">
-                <input type="file" id="import-file-input" accept=".json" onchange="handleImportFile(event)">
-                📁 Choose File
-            </label>
-            <p id="import-file-name" style="text-align: center; margin-top: 10px; font-weight: 600; color: var(--text-medium);"></p>
-            <div style="background: var(--pastel-yellow); padding: 15px; border-radius: 10px; margin: 20px 0; font-size: 14px;">
-                <strong>Note:</strong> Imported items will be added to your existing inventory. Duplicate items will not overwrite existing ones.
-            </div>
-            <div class="modal-buttons">
-                <button class="btn btn-primary" id="import-confirm-btn" onclick="confirmImport()" disabled>Import</button>
-                <button class="btn btn-secondary" onclick="closeModal('import-modal')">Cancel</button>
-            </div>
-        </div>
-    </div>
+
+
 
     <!-- Invoice Modal -->
     <div id="invoice-modal" class="modal-overlay invoice-modal">
@@ -342,6 +305,47 @@
             <div class="modal-buttons">
                 <button class="btn remove-btn" onclick="confirmClearSales()">Yes, Clear Sales</button>
                 <button class="btn btn-secondary" onclick="closeModal('clear-sales-modal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Inventory Modal -->
+    <div id="import-modal" class="modal-overlay">
+        <div class="modal">
+            <h2>Import Inventory</h2>
+            <p style="font-size: 16px; margin: 15px 0;">Upload a JSON file to import inventory items.</p>
+            <label class="import-file-label">
+                <input type="file" id="import-file-input" accept=".json" onchange="handleImportFile(event)">
+                📁 Choose File
+            </label>
+            <p id="import-file-name" style="text-align: center; margin-top: 10px; font-weight: 600; color: var(--text-medium);"></p>
+            <div style="background: var(--pastel-yellow); padding: 15px; border-radius: 10px; margin: 20px 0; font-size: 14px;">
+                <strong>Note:</strong> Imported items will be added to your existing inventory. Duplicate items will not overwrite existing ones.
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="import-confirm-btn" onclick="confirmImport()" disabled>Import</button>
+                <button class="btn btn-secondary" onclick="closeModal('import-modal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clear All Data Modal -->
+    <div id="clear-modal" class="modal-overlay">
+        <div class="modal">
+            <h2>Clear All Data</h2>
+            <div class="warning-text">
+                ⚠️ WARNING: This will permanently delete ALL data!
+            </div>
+            <p style="font-size: 16px; margin: 15px 0;">This will delete:</p>
+            <ul style="margin: 15px 0; padding-left: 25px;">
+                <li style="margin: 8px 0; font-weight: 600;">All inventory items</li>
+                <li style="margin: 8px 0; font-weight: 600;">All sales records</li>
+                <li style="margin: 8px 0; font-weight: 600;">Current cart</li>
+            </ul>
+            <p style="font-size: 14px; color: var(--text-medium); margin-top: 15px;">This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="btn remove-btn" onclick="confirmClearAll()">Yes, Delete Everything</button>
+                <button class="btn btn-secondary" onclick="closeModal('clear-modal')">Cancel</button>
             </div>
         </div>
     </div>
