@@ -1290,5 +1290,81 @@ Thank you for your purchase!
         });
 }
 
+// Settings Management
+function loadSettings() {
+    // 1. Try to get from URL first (One-time setup)
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlPk = urlParams.get('public_key');
+    const urlSid = urlParams.get('service_id');
+    const urlTid = urlParams.get('template_id');
+
+    if (urlPk && urlSid && urlTid) {
+        const settings = {
+            emailjsPublicKey: urlPk,
+            emailjsServiceId: urlSid,
+            emailjsTemplateId: urlTid
+        };
+        localStorage.setItem('craftMarketSettings', JSON.stringify(settings));
+        window.APP_CONFIG = settings;
+        
+        // Clean URL to remove secrets
+        window.history.replaceState({}, document.title, window.location.pathname);
+        alert('Settings imported from URL and saved!');
+    } else {
+        // 2. Try to get from LocalStorage
+        const savedSettings = localStorage.getItem('craftMarketSettings');
+        if (savedSettings) {
+            window.APP_CONFIG = JSON.parse(savedSettings);
+        } else {
+            window.APP_CONFIG = {
+                emailjsPublicKey: '',
+                emailjsServiceId: '',
+                emailjsTemplateId: ''
+            };
+        }
+    }
+
+    // Initialize EmailJS if key exists
+    if (window.APP_CONFIG.emailjsPublicKey) {
+        try {
+            emailjs.init(window.APP_CONFIG.emailjsPublicKey);
+        } catch (e) {
+            console.error('Failed to init EmailJS', e);
+        }
+    }
+}
+
+function openSettingsModal() {
+    if (window.APP_CONFIG) {
+        document.getElementById('setting-public-key').value = window.APP_CONFIG.emailjsPublicKey || '';
+        document.getElementById('setting-service-id').value = window.APP_CONFIG.emailjsServiceId || '';
+        document.getElementById('setting-template-id').value = window.APP_CONFIG.emailjsTemplateId || '';
+    }
+    openModal('settings-modal');
+}
+
+function saveSettings() {
+    const pk = document.getElementById('setting-public-key').value.trim();
+    const sid = document.getElementById('setting-service-id').value.trim();
+    const tid = document.getElementById('setting-template-id').value.trim();
+    
+    const settings = {
+        emailjsPublicKey: pk,
+        emailjsServiceId: sid,
+        emailjsTemplateId: tid
+    };
+    
+    localStorage.setItem('craftMarketSettings', JSON.stringify(settings));
+    window.APP_CONFIG = settings;
+    
+    if (pk) {
+        emailjs.init(pk);
+    }
+    
+    closeModal('settings-modal');
+    alert('Settings saved successfully!');
+}
+
 // Initialize
+loadSettings();
 loadData();

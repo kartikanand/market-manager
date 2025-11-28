@@ -8,28 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function(){
-            // Helper to get query params
-            function getQueryParam(param) {
-                const urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(param);
-            }
-
-            // Get config from URL or use defaults
-            window.APP_CONFIG = {
-                emailjsPublicKey: getQueryParam('public_key') || "",
-                emailjsServiceId: getQueryParam('service_id') || "",
-                emailjsTemplateId: getQueryParam('template_id') || ""
-            };
-
-            emailjs.init(window.APP_CONFIG.emailjsPublicKey);
-        })();
-    </script>
 </head>
 <body>
     <div class="app-container">
-        <h1 style="text-align: center; font-size: 42px; margin-bottom: 30px;">Craft Market Manager</h1>
+        <div class="app-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h1 style="font-size: 42px; margin: 0;">Craft Market Manager</h1>
+            <button class="btn btn-primary" onclick="openSettingsModal()" style="width: auto; padding: 10px 20px;">Settings</button>
+        </div>
         
         <nav class="nav-bar">
             <button class="nav-btn active" onclick="showScreen('inventory')">Inventory</button>
@@ -162,18 +147,6 @@
             <div class="content-card" style="text-align: center; background: linear-gradient(135deg, var(--pastel-mint), var(--pastel-blue));">
                 <h2 style="margin-bottom: 15px;">Total Revenue</h2>
                 <div class="cart-total" id="total-revenue" style="border: none; margin: 0; padding: 0; font-size: 42px; text-align: center;">$0.00</div>
-            </div>
-
-            <!-- New Layout: Actions Card -->
-            <div class="content-card">
-                <h2 style="margin-bottom: 15px;">Manage Data</h2>
-                <div class="export-section" style="margin-top: 0;">
-                    <button class="btn btn-primary" onclick="exportInventory()">Export Inventory</button>
-                    <button class="btn btn-accent" onclick="openModal('import-modal')">Import Inventory</button>
-                    <button class="btn btn-secondary" onclick="exportSales()">Export Sales</button>
-                    <button class="btn btn-warning" onclick="openModal('clear-sales-modal')">Clear Sales</button>
-                    <button class="btn btn-warning" onclick="openModal('clear-modal')">Clear All Data</button>
-                </div>
             </div>
 
             <!-- New Layout: History Card -->
@@ -313,6 +286,47 @@
             <div class="modal-buttons">
                 <button class="btn btn-primary" onclick="emailInvoice()">Send Email</button>
                 <button class="btn btn-secondary" onclick="closeModal('invoice-modal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal">
+            <h2>App Settings</h2>
+            
+            <div class="settings-section" style="margin-bottom: 30px;">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--text-medium);">Data Management</h3>
+                <div class="export-section" style="margin-top: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn btn-primary" onclick="exportInventory()">Export Inventory</button>
+                    <button class="btn btn-accent" onclick="openModal('import-modal')">Import Inventory</button>
+                    <button class="btn btn-secondary" onclick="exportSales()">Export Sales</button>
+                    <button class="btn btn-warning" onclick="openModal('clear-sales-modal')">Clear Sales</button>
+                    <button class="btn btn-warning" onclick="openModal('clear-modal')" style="grid-column: span 2;">Clear All Data</button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--text-medium);">Email Configuration</h3>
+                <p style="font-size: 14px; color: var(--text-medium); margin-bottom: 20px;">Configure your EmailJS integration keys here.</p>
+                
+                <div class="form-group">
+                    <label>EmailJS Public Key</label>
+                    <input type="text" id="setting-public-key">
+                </div>
+                <div class="form-group">
+                    <label>Service ID</label>
+                    <input type="text" id="setting-service-id">
+                </div>
+                <div class="form-group">
+                    <label>Template ID</label>
+                    <input type="text" id="setting-template-id">
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+                <button class="btn btn-secondary" onclick="closeModal('settings-modal')">Close</button>
             </div>
         </div>
     </div>
